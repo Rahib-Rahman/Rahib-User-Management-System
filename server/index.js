@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(cors({
-    origin: ["https://magical-dasik-b793de.netlify.app", "https://697fa7b1d5736a578eb62bc7--magical-dasik-b793de.netlify.app", "http://localhost:5173"],
+    origin: ["http://localhost:5173"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]

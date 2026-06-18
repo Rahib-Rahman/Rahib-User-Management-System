@@ -41,7 +41,7 @@ router.delete('/users/unverified/all',
 );
 
 // ========================================
-// TEACHER'S SUGGESTION: Email verification emulation
+// Email verification emulation
 // Allows user to verify their own email via button click
 // ========================================
 router.post('/users/verify-email-emulation',
