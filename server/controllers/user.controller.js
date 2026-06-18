@@ -129,41 +129,34 @@ class UserController {
     blockUsers = async (req, res) => {
         try {
             const { ids, status } = req.body;
-            if (!ids || ids.length === 0) {
+            if (!ids || !Array.isArray(ids) || ids.length === 0) {
                 return res.status(400).json({ message: 'No users selected' });
             }
 
-            let queryText;
-            let params;
-
             if (status === 'blocked') {
-                // Blocking: Save current status first
-                queryText = `
+                // Blocking
+                await db.query(`
                     UPDATE users 
                     SET status = $1, 
                         previous_status = status 
                     WHERE id = ANY($2) 
                     AND status != 'blocked'
-                `;
-                params = [status, ids];
+                `, [status, ids]);
             } else {
-                // Unblocking: Restore previous status
-                queryText = `
+                // Unblocking - FIXED
+                await db.query(`
                     UPDATE users 
                     SET status = COALESCE(previous_status, 'active'),
                         previous_status = NULL 
                     WHERE id = ANY($1)
-                `;
-                params = [ids];
+                `, [ids]);
             }
-
-            await db.query(queryText, params);
 
             res.status(200).json({
                 message: `Users successfully ${status === 'blocked' ? 'blocked' : 'unblocked'}`
             });
         } catch (error) {
-            console.error("Block/Unblock Error:", error); // ← Add this for debugging
+            console.error("Block/Unblock Error:", error);
             errorHandler(res, error);
         }
     };

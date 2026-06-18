@@ -26,7 +26,6 @@ function App() {
         />
         <Route path="/" element={<Navigate to="/admin" replace />} />
       </Routes>
-
         <ToastContainer
             position="top-right"
             autoClose={3000}
