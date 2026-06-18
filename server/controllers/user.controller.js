@@ -134,7 +134,7 @@ class UserController {
             }
 
             if (status === 'blocked') {
-                // Blocking: Save current status → previous_status, then block
+                // Blocking: Save current status to previous_status, then block
                 await db.query(`
                     UPDATE users 
                     SET status = $1, 
@@ -156,6 +156,7 @@ class UserController {
                 message: `Users successfully ${status === 'blocked' ? 'blocked' : 'unblocked'}`
             });
         } catch (error) {
+            console.error('Block/Unblock Error:', error); // Add this for better debugging
             errorHandler(res, error);
         }
     };
